@@ -3,307 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tuition Tracker Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Tuition Dashboard Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f4f6f8;
-            --text-color: #1a1c1e;
-            --sub-text-color: #6c757d;
+            --bg: #f1f5f9;
             --card-bg: #ffffff;
-            --primary: #007bff;
-            --secondary: #6f42c1;
-            --success: #20c997;
-            --danger: #dc3545;
-            --border-color: #e0e0e0;
-            --radius-main: 16px;
-            --radius-inner: 12px;
+            --primary: #4f46e5;
+            --secondary: #9333ea;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --border: #e2e8f0;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding: 20px;
-            padding-bottom: 100px;
+        body { background-color: var(--bg); color: var(--text-main); padding: 20px; }
+
+        .container { max-width: 500px; margin: 0 auto; }
+
+        /* Premium Dynamic Header */
+        .status-card {
+            background: linear-gradient(135deg, #4f46e5, #9333ea);
+            border-radius: 24px; padding: 25px; color: white;
+            margin-bottom: 25px; box-shadow: 0 15px 30px rgba(79, 70, 229, 0.2);
         }
 
-        .container { max-width: 600px; margin: 0 auto; }
+        .status-card h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 5px; }
+        .status-card p { opacity: 0.9; font-size: 0.9rem; font-weight: 500; }
 
-        /* Top Notification */
-        .top-day-card {
-            background-color: var(--card-bg);
-            border-radius: var(--radius-main);
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            margin-bottom: 24px;
+        .section-title {
+            font-size: 1.1rem; font-weight: 700; color: var(--text-sub);
+            margin-bottom: 15px; display: flex; justify-content: space-between;
         }
 
-        .icon-box {
-            width: 48px; height: 48px; border-radius: var(--radius-inner);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 24px; color: #fff; margin-right: 16px;
-        }
-
-        .icon-riyad { background-color: var(--primary); }
-        .icon-tanzid { background-color: var(--secondary); }
-        .icon-fardin { background-color: var(--success); }
-        .icon-niyaz { background-color: var(--danger); }
-
-        .day-info { flex-grow: 1; }
-        .day-title { font-weight: 600; font-size: 1.1rem; }
-        .day-subtitle { color: var(--sub-text-color); font-size: 0.9rem; margin-top: 4px; }
-
-        /* Student Section */
-        .section-header {
-            font-weight: 700; font-size: 1.2rem; margin-bottom: 12px;
-            color: var(--sub-text-color); display: flex; align-items: center; gap: 10px;
-        }
-
-        .cycle-badge {
-            background-color: #eaecef; color: var(--sub-text-color);
-            font-size: 0.8rem; padding: 4px 10px; border-radius: 50px; font-weight: 500;
-        }
-
-        .student-grid { display: flex; flex-direction: column; gap: 16px; }
-
-        /* Student Card */
+        /* Student Card Look */
         .student-card {
-            background-color: var(--card-bg);
-            border-radius: var(--radius-main);
-            padding: 24px;
-            border: 1px solid var(--border-color);
-            position: relative;
+            background: var(--card-bg); border-radius: 22px; padding: 20px;
+            margin-bottom: 15px; border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
-        .student-header { display: flex; align-items: center; margin-bottom: 16px; }
+        .card-header { display: flex; align-items: center; margin-bottom: 15px; }
 
         .avatar {
-            width: 50px; height: 50px; border-radius: var(--radius-inner);
-            font-size: 1.5rem; color: #fff; font-weight: 700;
-            display: flex; align-items: center; justify-content: center; margin-right: 16px;
+            width: 50px; height: 50px; border-radius: 15px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; font-weight: 700; color: white; margin-right: 15px;
         }
 
-        .student-name { font-weight: 700; font-size: 1.1rem; }
-        .student-cycle-due { color: var(--sub-text-color); font-size: 0.9rem; margin-top: 4px; }
+        .riyad-col { background: #3b82f6; }
+        .tanzid-col { background: #a855f7; }
+        .fardin-col { background: #10b981; }
+        .niyaz-col { background: #f43f5e; }
 
-        .lecture-numbers {
-            font-weight: 600; font-size: 1rem; color: #495057;
-            display: flex; justify-content: space-between; margin-bottom: 12px;
+        .info h3 { font-size: 1.1rem; font-weight: 700; }
+        .due-tag {
+            color: #ef4444; font-size: 0.7rem; font-weight: 800;
+            background: #fee2e2; padding: 2px 8px; border-radius: 6px; margin-left: 8px;
         }
 
-        .percent-complete { color: var(--sub-text-color); font-weight: 500; }
+        /* Progress Bar */
+        .bar-bg { height: 10px; background: #f1f5f9; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+        .bar-fill { height: 100%; transition: width 0.6s ease; }
 
-        .progress-bar-container {
-            width: 100%; height: 8px; background-color: #eaecef;
-            border-radius: 50px; overflow: hidden; margin-bottom: 12px;
+        .dots { display: flex; gap: 5px; margin-top: 10px; }
+        .dot { width: 100%; height: 5px; border-radius: 10px; background: #e2e8f0; }
+
+        /* Admin Button (Not Floating) */
+        .footer-admin {
+            margin-top: 40px; text-align: center; padding: 20px 0;
+            border-top: 1px solid var(--border);
         }
-
-        .progress-bar { height: 100%; border-radius: 50px; transition: width 0.3s ease; }
-
-        .segmented-progress { display: flex; gap: 6px; }
-
-        .prog-seg { width: 18px; height: 18px; border-radius: 6px; background-color: #eaecef; }
-
-        .filled-primary { background-color: var(--primary); }
-        .filled-secondary { background-color: var(--secondary); }
-        .filled-success { background-color: var(--success); }
-        .filled-danger { background-color: var(--danger); }
-
-        .due-payment { border-color: var(--danger); background-color: rgba(220, 53, 69, 0.03); }
-
-        .due-badge {
-            background-color: var(--danger); color: #fff; padding: 2px 8px;
-            border-radius: 50px; font-size: 0.75rem; font-weight: 600; margin-left: 8px;
+        
+        .admin-btn {
+            background: none; border: 1px solid var(--border);
+            padding: 10px 20px; border-radius: 12px; cursor: pointer;
+            color: var(--text-sub); font-size: 1.2rem; transition: 0.3s;
         }
+        .admin-btn:hover { border-color: var(--primary); color: var(--primary); background: white; }
 
-        .saved-automatically { text-align: center; color: var(--sub-text-color); font-size: 0.85rem; margin-top: 24px; }
-
-        /* Smaller & Refined Admin Button */
-        .admin-entry-point {
-            position: fixed;
-            bottom: 25px;
-            right: 25px; /* Moved to right side */
-            z-index: 1000;
-        }
-
-        .admin-btn-small {
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 10px 16px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: 0.2s;
-        }
-
-        .admin-btn-small:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            transform: scale(1.02);
-        }
-
-        /* Admin Panel */
+        /* Admin Panel Styling */
         #admin-panel {
-            margin-top: 40px; padding: 25px;
-            background-color: #fff; border-radius: var(--radius-main);
-            border: 1px dashed var(--sub-text-color);
+            background: white; border-radius: 24px; padding: 25px;
+            margin-top: 20px; border: 2px solid var(--primary);
         }
 
-        .admin-action-bar { display: flex; justify-content: space-between; margin-bottom: 20px; }
-
-        .btn-class-held {
-            background-color: var(--primary); color: #fff; border: none;
-            padding: 12px 20px; border-radius: var(--radius-inner);
-            font-weight: 600; cursor: pointer; width: 100%;
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px; color: var(--text-sub); }
+        .input-group input {
+            width: 100%; padding: 12px; border-radius: 10px;
+            border: 1px solid var(--border); outline: none;
         }
 
-        .btn-reset-cycle {
-            margin-top: 15px; background-color: #f8f9fa; color: var(--text-color);
-            border: 1px solid var(--border-color); width: 100%;
-            padding: 8px; border-radius: 10px; cursor: pointer;
+        .btn-main {
+            width: 100%; padding: 15px; border-radius: 12px; border: none;
+            background: var(--primary); color: white; font-weight: 700; cursor: pointer; margin-bottom: 20px;
+        }
+
+        .btn-reset {
+            padding: 6px 12px; font-size: 0.8rem; border-radius: 8px;
+            border: 1px solid #fee2e2; background: #fff1f2; color: #ef4444; cursor: pointer;
         }
 
         .hidden { display: none !important; }
-        .logout-link { color: var(--sub-text-color); cursor: pointer; text-decoration: underline; font-size: 0.85rem;}
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="top-day-card">
-            <div class="icon-box icon-riyad">📅</div>
-            <div class="day-info">
-                <div class="day-title">No class today — Friday</div>
-                <div class="day-subtitle">Next class: Sunday, Apr 26</div>
-            </div>
+        <div class="status-card">
+            <h2 id="display-title">Next Class: Sunday</h2>
+            <p id="display-subtitle">Regular Time: 4:00 PM</p>
         </div>
 
-        <div class="section-header">
-            <span>Students</span>
-            <span class="cycle-badge">12 lectures = 1 cycle</span>
+        <div class="section-title">
+            <span>Student Tracker</span>
+            <span style="font-size: 0.8rem;">Target: 12</span>
         </div>
 
-        <div id="student-grid" class="student-grid"></div>
+        <div id="student-list"></div>
 
-        <p class="saved-automatically">Data is saved automatically in your browser.</p>
-
-        <div class="admin-entry-point">
-            <button id="admin-login-btn" class="admin-btn-small">
-                ⚙️ Admin
-            </button>
+        <div class="footer-admin">
+            <button class="admin-btn" id="admin-open-btn">⚙️</button>
         </div>
 
         <div id="admin-panel" class="hidden">
-            <div class="admin-action-bar">
-                <h3 style="color: var(--sub-text-color);">Management</h3>
-                <span onclick="logout()" class="logout-link">Close</span>
+            <h3 style="margin-bottom: 20px;">Settings</h3>
+            
+            <div class="input-group">
+                <label>Header Title (e.g. Next Class: Sunday)</label>
+                <input type="text" id="input-title" placeholder="Enter title...">
             </div>
+            <div class="input-group">
+                <label>Header Subtitle (e.g. Regular Time: 4:00 PM)</label>
+                <input type="text" id="input-subtitle" placeholder="Enter subtitle...">
+            </div>
+            <button class="btn-main" onclick="updateHeader()">Update Status Board</button>
+
+            <hr style="margin-bottom: 20px; border: 0; border-top: 1px solid var(--border);">
             
-            <button onclick="incrementAllLectures()" class="btn-class-held">Class Held (+1 All)</button>
+            <button class="btn-main" style="background: #10b981;" onclick="addLecture()">Add +1 Lecture to All</button>
+            <div id="admin-student-controls"></div>
             
-            <div id="admin-student-grid" class="student-grid" style="margin-top: 20px;"></div>
+            <button class="btn-main" style="background: #64748b; margin-top: 20px;" onclick="closeAdmin()">Close Settings</button>
         </div>
     </div>
 
     <script>
-        const defaultStudentsData = [
-            { id: 1, name: "Riyad", currentLectures: 7, isPaymentDue: false, classColor: "primary" },
-            { id: 2, name: "Tanzid", currentLectures: 0, isPaymentDue: false, classColor: "secondary" },
-            { id: 3, name: "Fardin", currentLectures: 9, isPaymentDue: false, classColor: "success" },
-            { id: 4, name: "Niyaz", currentLectures: 4, isPaymentDue: false, classColor: "danger" }
+        // Data Structure
+        const defaultStudents = [
+            { id: 1, name: "Riyad", count: 7, isDue: false, col: "riyad-col" },
+            { id: 2, name: "Tanzid", count: 12, isDue: true, col: "tanzid-col" },
+            { id: 3, name: "Fardin", count: 9, isDue: false, col: "fardin-col" },
+            { id: 4, name: "Niyaz", count: 4, isDue: false, col: "niyaz-col" }
         ];
 
-        let studentsList = JSON.parse(localStorage.getItem('tuition_tracker_v5')) || defaultStudentsData;
+        let students = JSON.parse(localStorage.getItem('ultra_v2_data')) || defaultStudents;
+        let headerInfo = JSON.parse(localStorage.getItem('ultra_v2_header')) || { title: "Next Class: Sunday", subtitle: "Regular Time: 4:00 PM" };
 
-        function renderDashboard() {
-            const studentGrid = document.getElementById('student-grid');
-            const adminGrid = document.getElementById('admin-student-grid');
-            studentGrid.innerHTML = '';
-            adminGrid.innerHTML = '';
+        function render() {
+            // Update Header
+            document.getElementById('display-title').innerText = headerInfo.title;
+            document.getElementById('display-subtitle').innerText = headerInfo.subtitle;
+            document.getElementById('input-title').value = headerInfo.title;
+            document.getElementById('input-subtitle').value = headerInfo.subtitle;
 
-            studentsList.forEach(s => {
-                const lecturesNeeded = 12 - s.currentLectures;
-                const percentage = Math.round((s.currentLectures / 12) * 100);
+            const list = document.getElementById('student-list');
+            const adminCtrls = document.getElementById('admin-student-controls');
+            list.innerHTML = '';
+            adminCtrls.innerHTML = '';
 
-                // Public View
-                const publicCard = document.createElement('div');
-                publicCard.className = `student-card ${s.isPaymentDue ? 'due-payment' : ''}`;
+            students.forEach(s => {
+                const perc = Math.min((s.count / 12) * 100, 100);
                 
-                let segmentedHTML = '';
-                for (let i = 1; i <= 12; i++) {
-                    let filledClass = (i <= s.currentLectures) ? ` filled-${s.classColor}` : '';
-                    segmentedHTML += `<div class="prog-seg${filledClass}"></div>`;
-                }
-
-                publicCard.innerHTML = `
-                    <div class="student-header">
-                        <div class="avatar icon-${s.classColor}">${s.name.charAt(0)}</div>
-                        <div class="student-info">
-                            <div class="student-name">${s.name}${s.isPaymentDue ? '<span class="due-badge">DUE</span>' : ''}</div>
-                            <div class="student-cycle-due">${lecturesNeeded} lectures until payment</div>
+                // Dashboard Card
+                const card = document.createElement('div');
+                card.className = 'student-card';
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="avatar ${s.col}">${s.name[0]}</div>
+                        <div class="info">
+                            <h3>${s.name} ${s.isDue ? '<span class="due-tag">DUE</span>' : ''}</h3>
+                            <p style="font-size: 0.8rem; color: var(--text-sub);">${s.count}/12 Lectures completed</p>
                         </div>
                     </div>
-                    <div class="lecture-numbers">
-                        <span>${s.currentLectures} / 12 Lectures</span>
-                        <span class="percent-complete">${percentage}%</span>
+                    <div class="bar-bg"><div class="bar-fill ${s.col}" style="width: ${perc}%"></div></div>
+                    <div class="dots">
+                        ${Array(12).fill(0).map((_, i) => `<div class="dot" style="background: ${i < s.count ? 'var(--primary)' : '#e2e8f0'}"></div>`).join('')}
                     </div>
-                    <div class="progress-bar-container"><div class="progress-bar icon-${s.classColor}" style="width: ${percentage}%"></div></div>
-                    <div class="segmented-progress">${segmentedHTML}</div>
                 `;
-                studentGrid.appendChild(publicCard);
+                list.appendChild(card);
 
-                // Admin View
-                const adminCard = document.createElement('div');
-                adminCard.className = 'student-card';
-                adminCard.innerHTML = `
-                    <div class="student-header">
-                        <div class="avatar icon-${s.classColor}">${s.name.charAt(0)}</div>
-                        <div class="student-name">${s.name}</div>
-                    </div>
-                    <button onclick="resetStudentCycle(${s.id})" class="btn-reset-cycle">Reset Cycle</button>
+                // Admin Controls
+                const ctrl = document.createElement('div');
+                ctrl.style.display = "flex";
+                ctrl.style.justifyContent = "space-between";
+                ctrl.style.alignItems = "center";
+                ctrl.style.marginBottom = "10px";
+                ctrl.innerHTML = `
+                    <span style="font-weight:600;">${s.name} (${s.count})</span>
+                    <button class="btn-reset" onclick="clearDue(${s.id})">Clear Due</button>
                 `;
-                adminGrid.appendChild(adminCard);
+                adminCtrls.appendChild(ctrl);
             });
 
-            localStorage.setItem('tuition_tracker_v5', JSON.stringify(studentsList));
+            localStorage.setItem('ultra_v2_data', JSON.stringify(students));
+            localStorage.setItem('ultra_v2_header', JSON.stringify(headerInfo));
         }
 
-        function incrementAllLectures() {
-            studentsList = studentsList.map(s => {
-                let nextCount = s.currentLectures + 1;
-                if (nextCount > 12) nextCount = 12;
-                return { ...s, currentLectures: nextCount, isPaymentDue: nextCount >= 12 };
+        // Admin Functions
+        function updateHeader() {
+            headerInfo.title = document.getElementById('input-title').value;
+            headerInfo.subtitle = document.getElementById('input-subtitle').value;
+            render();
+            alert("Status board updated!");
+        }
+
+        function addLecture() {
+            students = students.map(s => {
+                const newCount = s.count + 1;
+                return { ...s, count: newCount, isDue: newCount >= 12 ? true : s.isDue };
             });
-            renderDashboard();
+            render();
         }
 
-        function resetStudentCycle(id) {
-            if (confirm("Reset count to 0?")) {
-                studentsList = studentsList.map(s => s.id === id ? { ...s, isPaymentDue: false, currentLectures: 0 } : s);
-                renderDashboard();
-            }
+        function clearDue(id) {
+            students = students.map(s => s.id === id ? { ...s, isDue: false } : s);
+            render();
         }
 
-        document.getElementById('admin-login-btn').addEventListener('click', () => {
-            if (prompt("Password:") === "945462") {
+        document.getElementById('admin-open-btn').onclick = () => {
+            if(prompt("Password:") === "945462") {
                 document.getElementById('admin-panel').classList.remove('hidden');
                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
             }
-        });
+        };
 
-        function logout() { document.getElementById('admin-panel').classList.add('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        function closeAdmin() { document.getElementById('admin-panel').classList.add('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-        renderDashboard();
+        render();
     </script>
 </body>
 </html>
