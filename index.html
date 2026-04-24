@@ -1,1 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuition Tracker Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f4f6f8;
+            --text-color: #1a1c1e;
+            --sub-text-color: #6c757d;
+            --card-bg: #ffffff;
+            --primary: #007bff;
+            --secondary: #6f42c1;
+            --success: #20c997;
+            --danger: #dc3545;
+            --border-color: #e0e0e0;
+            --radius-main: 16px;
+            --radius-inner: 12px;
+        }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        .container { max-width: 600px; margin: 0 auto; }
+
+        /* Top Notification */
+        .top-day-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-main);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .icon-box {
+            width: 48px; height: 48px; border-radius: var(--radius-inner);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; color: #fff; margin-right: 16px;
+        }
+
+        .icon-riyad { background-color: var(--primary); }
+        .icon-tanzid { background-color: var(--secondary); }
+        .icon-fardin { background-color: var(--success); }
+        .icon-niyaz { background-color: var(--danger); }
+
+        .day-info { flex-grow: 1; }
+        .day-title { font-weight: 600; font-size: 1.1rem; }
+        .day-subtitle { color: var(--sub-text-color); font-size: 0.9rem; margin-top: 4px; }
+
+        /* Student Section */
+        .section-header {
+            font-weight: 700; font-size: 1.2rem; margin-bottom: 12px;
+            color: var(--sub-text-color); display: flex; align-items: center; gap: 10px;
+        }
+
+        .cycle-badge {
+            background-color: #eaecef; color: var(--sub-text-color);
+            font-size: 0.8rem; padding: 4px 10px; border-radius: 50px; font-weight: 500;
+        }
+
+        .student-grid { display: flex; flex-direction: column; gap: 16px; }
+
+        /* Student Card */
+        .student-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-main);
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .student-header { display: flex; align-items: center; margin-bottom: 16px; }
+
+        .avatar {
+            width: 50px; height: 50px; border-radius: var(--radius-inner);
+            font-size: 1.5rem; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; margin-right: 16px;
+        }
+
+        .student-name { font-weight: 700; font-size: 1.1rem; }
+        .student-cycle-due { color: var(--sub-text-color); font-size: 0.9rem; margin-top: 4px; }
+
+        .lecture-numbers {
+            font-weight: 600; font-size: 1rem; color: #495057;
+            display: flex; justify-content: space-between; margin-bottom: 12px;
+        }
+
+        .percent-complete { color: var(--sub-text-color); font-weight: 500; }
+
+        .progress-bar-container {
+            width: 100%; height: 8px; background-color: #eaecef;
+            border-radius: 50px; overflow: hidden; margin-bottom: 12px;
+        }
+
+        .progress-bar { height: 100%; border-radius: 50px; transition: width 0.3s ease; }
+
+        .segmented-progress { display: flex; gap: 6px; }
+
+        .prog-seg { width: 18px; height: 18px; border-radius: 6px; background-color: #eaecef; }
+
+        .filled-primary { background-color: var(--primary); }
+        .filled-secondary { background-color: var(--secondary); }
+        .filled-success { background-color: var(--success); }
+        .filled-danger { background-color: var(--danger); }
+
+        .due-payment { border-color: var(--danger); background-color: rgba(220, 53, 69, 0.03); }
+
+        .due-badge {
+            background-color: var(--danger); color: #fff; padding: 2px 8px;
+            border-radius: 50px; font-size: 0.75rem; font-weight: 600; margin-left: 8px;
+        }
+
+        .saved-automatically { text-align: center; color: var(--sub-text-color); font-size: 0.85rem; margin-top: 24px; }
+
+        /* Smaller & Refined Admin Button */
+        .admin-entry-point {
+            position: fixed;
+            bottom: 25px;
+            right: 25px; /* Moved to right side */
+            z-index: 1000;
+        }
+
+        .admin-btn-small {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: 0.2s;
+        }
+
+        .admin-btn-small:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: scale(1.02);
+        }
+
+        /* Admin Panel */
+        #admin-panel {
+            margin-top: 40px; padding: 25px;
+            background-color: #fff; border-radius: var(--radius-main);
+            border: 1px dashed var(--sub-text-color);
+        }
+
+        .admin-action-bar { display: flex; justify-content: space-between; margin-bottom: 20px; }
+
+        .btn-class-held {
+            background-color: var(--primary); color: #fff; border: none;
+            padding: 12px 20px; border-radius: var(--radius-inner);
+            font-weight: 600; cursor: pointer; width: 100%;
+        }
+
+        .btn-reset-cycle {
+            margin-top: 15px; background-color: #f8f9fa; color: var(--text-color);
+            border: 1px solid var(--border-color); width: 100%;
+            padding: 8px; border-radius: 10px; cursor: pointer;
+        }
+
+        .hidden { display: none !important; }
+        .logout-link { color: var(--sub-text-color); cursor: pointer; text-decoration: underline; font-size: 0.85rem;}
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="top-day-card">
+            <div class="icon-box icon-riyad">📅</div>
+            <div class="day-info">
+                <div class="day-title">No class today — Friday</div>
+                <div class="day-subtitle">Next class: Sunday, Apr 26</div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <span>Students</span>
+            <span class="cycle-badge">12 lectures = 1 cycle</span>
+        </div>
+
+        <div id="student-grid" class="student-grid"></div>
+
+        <p class="saved-automatically">Data is saved automatically in your browser.</p>
+
+        <div class="admin-entry-point">
+            <button id="admin-login-btn" class="admin-btn-small">
+                ⚙️ Admin
+            </button>
+        </div>
+
+        <div id="admin-panel" class="hidden">
+            <div class="admin-action-bar">
+                <h3 style="color: var(--sub-text-color);">Management</h3>
+                <span onclick="logout()" class="logout-link">Close</span>
+            </div>
+            
+            <button onclick="incrementAllLectures()" class="btn-class-held">Class Held (+1 All)</button>
+            
+            <div id="admin-student-grid" class="student-grid" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+
+    <script>
+        const defaultStudentsData = [
+            { id: 1, name: "Riyad", currentLectures: 7, isPaymentDue: false, classColor: "primary" },
+            { id: 2, name: "Tanzid", currentLectures: 0, isPaymentDue: false, classColor: "secondary" },
+            { id: 3, name: "Fardin", currentLectures: 9, isPaymentDue: false, classColor: "success" },
+            { id: 4, name: "Niyaz", currentLectures: 4, isPaymentDue: false, classColor: "danger" }
+        ];
+
+        let studentsList = JSON.parse(localStorage.getItem('tuition_tracker_v5')) || defaultStudentsData;
+
+        function renderDashboard() {
+            const studentGrid = document.getElementById('student-grid');
+            const adminGrid = document.getElementById('admin-student-grid');
+            studentGrid.innerHTML = '';
+            adminGrid.innerHTML = '';
+
+            studentsList.forEach(s => {
+                const lecturesNeeded = 12 - s.currentLectures;
+                const percentage = Math.round((s.currentLectures / 12) * 100);
+
+                // Public View
+                const publicCard = document.createElement('div');
+                publicCard.className = `student-card ${s.isPaymentDue ? 'due-payment' : ''}`;
+                
+                let segmentedHTML = '';
+                for (let i = 1; i <= 12; i++) {
+                    let filledClass = (i <= s.currentLectures) ? ` filled-${s.classColor}` : '';
+                    segmentedHTML += `<div class="prog-seg${filledClass}"></div>`;
+                }
+
+                publicCard.innerHTML = `
+                    <div class="student-header">
+                        <div class="avatar icon-${s.classColor}">${s.name.charAt(0)}</div>
+                        <div class="student-info">
+                            <div class="student-name">${s.name}${s.isPaymentDue ? '<span class="due-badge">DUE</span>' : ''}</div>
+                            <div class="student-cycle-due">${lecturesNeeded} lectures until payment</div>
+                        </div>
+                    </div>
+                    <div class="lecture-numbers">
+                        <span>${s.currentLectures} / 12 Lectures</span>
+                        <span class="percent-complete">${percentage}%</span>
+                    </div>
+                    <div class="progress-bar-container"><div class="progress-bar icon-${s.classColor}" style="width: ${percentage}%"></div></div>
+                    <div class="segmented-progress">${segmentedHTML}</div>
+                `;
+                studentGrid.appendChild(publicCard);
+
+                // Admin View
+                const adminCard = document.createElement('div');
+                adminCard.className = 'student-card';
+                adminCard.innerHTML = `
+                    <div class="student-header">
+                        <div class="avatar icon-${s.classColor}">${s.name.charAt(0)}</div>
+                        <div class="student-name">${s.name}</div>
+                    </div>
+                    <button onclick="resetStudentCycle(${s.id})" class="btn-reset-cycle">Reset Cycle</button>
+                `;
+                adminGrid.appendChild(adminCard);
+            });
+
+            localStorage.setItem('tuition_tracker_v5', JSON.stringify(studentsList));
+        }
+
+        function incrementAllLectures() {
+            studentsList = studentsList.map(s => {
+                let nextCount = s.currentLectures + 1;
+                if (nextCount > 12) nextCount = 12;
+                return { ...s, currentLectures: nextCount, isPaymentDue: nextCount >= 12 };
+            });
+            renderDashboard();
+        }
+
+        function resetStudentCycle(id) {
+            if (confirm("Reset count to 0?")) {
+                studentsList = studentsList.map(s => s.id === id ? { ...s, isPaymentDue: false, currentLectures: 0 } : s);
+                renderDashboard();
+            }
+        }
+
+        document.getElementById('admin-login-btn').addEventListener('click', () => {
+            if (prompt("Password:") === "945462") {
+                document.getElementById('admin-panel').classList.remove('hidden');
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }
+        });
+
+        function logout() { document.getElementById('admin-panel').classList.add('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        renderDashboard();
+    </script>
+</body>
+</html>
