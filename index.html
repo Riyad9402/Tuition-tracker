@@ -3,246 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tuition Dashboard Pro</title>
+    <title>Tuition Tracker Ultra Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f1f5f9;
+            --bg: #f8fafc;
             --card-bg: #ffffff;
-            --primary: #4f46e5;
-            --secondary: #9333ea;
-            --text-main: #1e293b;
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --text-main: #0f172a;
             --text-sub: #64748b;
             --border: #e2e8f0;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-
-        body { background-color: var(--bg); color: var(--text-main); padding: 20px; }
-
+        body { background-color: var(--bg); color: var(--text-main); padding: 20px; line-height: 1.5; }
         .container { max-width: 500px; margin: 0 auto; }
 
-        /* Premium Dynamic Header */
+        /* Premium Header Card */
         .status-card {
-            background: linear-gradient(135deg, #4f46e5, #9333ea);
-            border-radius: 24px; padding: 25px; color: white;
-            margin-bottom: 25px; box-shadow: 0 15px 30px rgba(79, 70, 229, 0.2);
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            border-radius: 28px; padding: 30px; color: white;
+            margin-bottom: 30px; box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.2);
+            position: relative; overflow: hidden;
         }
-
-        .status-card h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 5px; }
-        .status-card p { opacity: 0.9; font-size: 0.9rem; font-weight: 500; }
-
-        .section-title {
-            font-size: 1.1rem; font-weight: 700; color: var(--text-sub);
-            margin-bottom: 15px; display: flex; justify-content: space-between;
+        .status-card h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 5px; position: relative; z-index: 2; }
+        .status-card p { opacity: 0.9; font-weight: 500; position: relative; z-index: 2; }
+        .status-card::after {
+            content: ''; position: absolute; top: -50%; right: -20%;
+            width: 200px; height: 200px; background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%; z-index: 1;
         }
 
         /* Student Card Look */
         .student-card {
-            background: var(--card-bg); border-radius: 22px; padding: 20px;
+            background: var(--card-bg); border-radius: 24px; padding: 22px;
             margin-bottom: 15px; border: 1px solid var(--border);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
         }
-
-        .card-header { display: flex; align-items: center; margin-bottom: 15px; }
-
+        .card-header { display: flex; align-items: center; margin-bottom: 18px; }
         .avatar {
-            width: 50px; height: 50px; border-radius: 15px;
+            width: 54px; height: 54px; border-radius: 16px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem; font-weight: 700; color: white; margin-right: 15px;
+            font-size: 1.5rem; font-weight: 700; color: white; margin-right: 15px;
         }
+        .riyad-col { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .tanzid-col { background: linear-gradient(135deg, #a855f7, #7c3aed); }
+        .fardin-col { background: linear-gradient(135deg, #10b981, #059669); }
+        .niyaz-col { background: linear-gradient(135deg, #f43f5e, #e11d48); }
 
-        .riyad-col { background: #3b82f6; }
-        .tanzid-col { background: #a855f7; }
-        .fardin-col { background: #10b981; }
-        .niyaz-col { background: #f43f5e; }
-
-        .info h3 { font-size: 1.1rem; font-weight: 700; }
         .due-tag {
             color: #ef4444; font-size: 0.7rem; font-weight: 800;
-            background: #fee2e2; padding: 2px 8px; border-radius: 6px; margin-left: 8px;
+            background: #fee2e2; padding: 3px 10px; border-radius: 8px; margin-left: 10px;
+            border: 1px solid #fecaca; text-transform: uppercase;
         }
 
-        /* Progress Bar */
-        .bar-bg { height: 10px; background: #f1f5f9; border-radius: 10px; overflow: hidden; margin: 10px 0; }
-        .bar-fill { height: 100%; transition: width 0.6s ease; }
-
-        .dots { display: flex; gap: 5px; margin-top: 10px; }
-        .dot { width: 100%; height: 5px; border-radius: 10px; background: #e2e8f0; }
-
-        /* Admin Button (Not Floating) */
-        .footer-admin {
-            margin-top: 40px; text-align: center; padding: 20px 0;
-            border-top: 1px solid var(--border);
-        }
+        /* Progress Design */
+        .bar-bg { height: 12px; background: #f1f5f9; border-radius: 10px; overflow: hidden; margin: 12px 0; }
+        .bar-fill { height: 100%; transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative; }
         
-        .admin-btn {
-            background: none; border: 1px solid var(--border);
-            padding: 10px 20px; border-radius: 12px; cursor: pointer;
-            color: var(--text-sub); font-size: 1.2rem; transition: 0.3s;
-        }
-        .admin-btn:hover { border-color: var(--primary); color: var(--primary); background: white; }
+        .dots { display: flex; gap: 4px; margin-top: 12px; }
+        .dot { width: 100%; height: 6px; border-radius: 10px; background: #e2e8f0; transition: background 0.3s; }
 
-        /* Admin Panel Styling */
-        #admin-panel {
-            background: white; border-radius: 24px; padding: 25px;
-            margin-top: 20px; border: 2px solid var(--primary);
+        /* Admin Footer Section */
+        .footer-admin { margin-top: 50px; text-align: center; border-top: 1px solid var(--border); padding-top: 30px; }
+        .admin-btn { 
+            background: white; border: 1px solid var(--border); padding: 12px; 
+            border-radius: 15px; cursor: pointer; font-size: 1.3rem; 
+            color: var(--text-sub); transition: 0.2s;
         }
+        .admin-btn:hover { border-color: var(--primary); color: var(--primary); }
 
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px; color: var(--text-sub); }
-        .input-group input {
-            width: 100%; padding: 12px; border-radius: 10px;
-            border: 1px solid var(--border); outline: none;
+        /* Admin Panel Overlay */
+        #admin-panel { 
+            background: white; border-radius: 30px; padding: 25px; 
+            margin-top: 25px; border: 2px solid var(--primary); 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); 
         }
-
-        .btn-main {
-            width: 100%; padding: 15px; border-radius: 12px; border: none;
-            background: var(--primary); color: white; font-weight: 700; cursor: pointer; margin-bottom: 20px;
-        }
-
-        .btn-reset {
-            padding: 6px 12px; font-size: 0.8rem; border-radius: 8px;
-            border: 1px solid #fee2e2; background: #fff1f2; color: #ef4444; cursor: pointer;
-        }
-
+        .admin-ctrl-card { background: #f8fafc; border-radius: 18px; padding: 18px; margin-bottom: 15px; border: 1px solid var(--border); }
+        
+        .input-box { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border); margin-top: 5px; outline: none; font-weight: 600; font-size: 0.9rem; }
+        .btn-update { background: var(--primary); color: white; border: none; width: 100%; padding: 14px; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        .btn-update:active { transform: scale(0.98); }
+        
+        .reset-mini { background: #fee2e2; color: #ef4444; border: 1px solid #fecaca; padding: 6px 12px; border-radius: 10px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+        
         .hidden { display: none !important; }
+        #close-x { font-size: 1.2rem; color: var(--text-sub); transition: 0.2s; }
+        #close-x:hover { color: #ef4444; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="status-card">
-            <h2 id="display-title">Next Class: Sunday</h2>
-            <p id="display-subtitle">Regular Time: 4:00 PM</p>
-        </div>
-
-        <div class="section-title">
-            <span>Student Tracker</span>
-            <span style="font-size: 0.8rem;">Target: 12</span>
-        </div>
-
-        <div id="student-list"></div>
-
-        <div class="footer-admin">
-            <button class="admin-btn" id="admin-open-btn">⚙️</button>
-        </div>
-
-        <div id="admin-panel" class="hidden">
-            <h3 style="margin-bottom: 20px;">Settings</h3>
-            
-            <div class="input-group">
-                <label>Header Title (e.g. Next Class: Sunday)</label>
-                <input type="text" id="input-title" placeholder="Enter title...">
-            </div>
-            <div class="input-group">
-                <label>Header Subtitle (e.g. Regular Time: 4:00 PM)</label>
-                <input type="text" id="input-subtitle" placeholder="Enter subtitle...">
-            </div>
-            <button class="btn-main" onclick="updateHeader()">Update Status Board</button>
-
-            <hr style="margin-bottom: 20px; border: 0; border-top: 1px solid var(--border);">
-            
-            <button class="btn-main" style="background: #10b981;" onclick="addLecture()">Add +1 Lecture to All</button>
-            <div id="admin-student-controls"></div>
-            
-            <button class="btn-main" style="background: #64748b; margin-top: 20px;" onclick="closeAdmin()">Close Settings</button>
-        </div>
+<div class="container">
+    <div class="status-card">
+        <h2 id="display-title">Loading...</h2>
+        <p id="display-subtitle">Loading...</p>
     </div>
 
-    <script>
-        // Data Structure
-        const defaultStudents = [
-            { id: 1, name: "Riyad", count: 7, isDue: false, col: "riyad-col" },
-            { id: 2, name: "Tanzid", count: 12, isDue: true, col: "tanzid-col" },
-            { id: 3, name: "Fardin", count: 9, isDue: false, col: "fardin-col" },
-            { id: 4, name: "Niyaz", count: 4, isDue: false, col: "niyaz-col" }
-        ];
+    <div id="student-list"></div>
 
-        let students = JSON.parse(localStorage.getItem('ultra_v2_data')) || defaultStudents;
-        let headerInfo = JSON.parse(localStorage.getItem('ultra_v2_header')) || { title: "Next Class: Sunday", subtitle: "Regular Time: 4:00 PM" };
+    <div class="footer-admin">
+        <button class="admin-btn" id="admin-open-btn">⚙️</button>
+    </div>
 
-        function render() {
-            // Update Header
-            document.getElementById('display-title').innerText = headerInfo.title;
-            document.getElementById('display-subtitle').innerText = headerInfo.subtitle;
-            document.getElementById('input-title').value = headerInfo.title;
-            document.getElementById('input-subtitle').value = headerInfo.subtitle;
+    <div id="admin-panel" class="hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="font-weight: 800; font-size: 1.3rem;">Settings</h3>
+            <span id="close-x" style="cursor:pointer; font-weight: bold;">✕</span>
+        </div>
+        
+        <div class="admin-ctrl-card">
+            <label style="font-size: 0.75rem; font-weight: 800; color: var(--text-sub); text-transform: uppercase;">Update Board Status</label>
+            <input type="text" id="input-title" class="input-box" placeholder="Title (e.g. Next Class: Sunday)">
+            <input type="text" id="input-subtitle" class="input-box" placeholder="Subtitle (e.g. Time: 4:00 PM)" style="margin-top: 10px;">
+            <button class="btn-update" onclick="updateHeader()">Save Board Update</button>
+        </div>
 
-            const list = document.getElementById('student-list');
-            const adminCtrls = document.getElementById('admin-student-controls');
-            list.innerHTML = '';
-            adminCtrls.innerHTML = '';
+        <button class="btn-update" style="background: #10b981; margin-bottom: 25px; box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);" onclick="addLectureAll()">
+            Class Held Today (+1 All)
+        </button>
 
-            students.forEach(s => {
-                const perc = Math.min((s.count / 12) * 100, 100);
-                
-                // Dashboard Card
-                const card = document.createElement('div');
-                card.className = 'student-card';
-                card.innerHTML = `
+        <div id="admin-students"></div>
+    </div>
+</div>
+
+<script>
+    // Initial Data Structure
+    const initialData = [
+        { id: 1, name: "Riyad", count: 7, isDue: false, col: "riyad-col" },
+        { id: 2, name: "Tanzid", count: 1, isDue: false, col: "tanzid-col" },
+        { id: 3, name: "Fardin", count: 9, isDue: false, col: "fardin-col" },
+        { id: 4, name: "Niyaz", count: 4, isDue: false, col: "niyaz-col" }
+    ];
+
+    let students = JSON.parse(localStorage.getItem('tuition_v5_data')) || initialData;
+    let header = JSON.parse(localStorage.getItem('tuition_v5_head')) || { t: "Next Class: Sunday", s: "Time: 4:00 PM" };
+
+    function render() {
+        // Render Header
+        document.getElementById('display-title').innerText = header.t;
+        document.getElementById('display-subtitle').innerText = header.s;
+        document.getElementById('input-title').value = header.t;
+        document.getElementById('input-subtitle').value = header.s;
+        
+        const list = document.getElementById('student-list');
+        const adminList = document.getElementById('admin-students');
+        list.innerHTML = '';
+        adminList.innerHTML = '';
+
+        students.forEach(s => {
+            const safeCount = Math.min(s.count, 12);
+            const perc = (safeCount / 12) * 100;
+
+            // --- Public UI Card ---
+            list.innerHTML += `
+                <div class="student-card">
                     <div class="card-header">
                         <div class="avatar ${s.col}">${s.name[0]}</div>
                         <div class="info">
                             <h3>${s.name} ${s.isDue ? '<span class="due-tag">DUE</span>' : ''}</h3>
-                            <p style="font-size: 0.8rem; color: var(--text-sub);">${s.count}/12 Lectures completed</p>
+                            <p style="font-size: 0.85rem; color: var(--text-sub); font-weight: 500;">${s.count}/12 Lectures Completed</p>
                         </div>
                     </div>
                     <div class="bar-bg"><div class="bar-fill ${s.col}" style="width: ${perc}%"></div></div>
                     <div class="dots">
                         ${Array(12).fill(0).map((_, i) => `<div class="dot" style="background: ${i < s.count ? 'var(--primary)' : '#e2e8f0'}"></div>`).join('')}
                     </div>
-                `;
-                list.appendChild(card);
+                </div>`;
 
-                // Admin Controls
-                const ctrl = document.createElement('div');
-                ctrl.style.display = "flex";
-                ctrl.style.justifyContent = "space-between";
-                ctrl.style.alignItems = "center";
-                ctrl.style.marginBottom = "10px";
-                ctrl.innerHTML = `
-                    <span style="font-weight:600;">${s.name} (${s.count})</span>
-                    <button class="btn-reset" onclick="clearDue(${s.id})">Clear Due</button>
-                `;
-                adminCtrls.appendChild(ctrl);
-            });
+            // --- Admin Control Card ---
+            adminList.innerHTML += `
+                <div class="admin-ctrl-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <strong style="font-size: 1rem;">${s.name}</strong>
+                        <button class="reset-mini" onclick="clearDue(${s.id})">Clear Due Tag</button>
+                    </div>
+                    <label style="font-size:0.7rem; color:var(--text-sub); font-weight:700;">EDIT LECTURES:</label>
+                    <div style="display:flex; gap:10px; margin-top:5px;">
+                        <input type="number" id="num-${s.id}" value="${s.count}" class="input-box" style="margin:0; flex:1">
+                        <button class="btn-update" style="margin:0; width:auto; padding:0 20px; font-size:0.85rem;" onclick="manualUpdate(${s.id})">Save</button>
+                    </div>
+                </div>`;
+        });
 
-            localStorage.setItem('ultra_v2_data', JSON.stringify(students));
-            localStorage.setItem('ultra_v2_header', JSON.stringify(headerInfo));
-        }
+        // Local Storage Save
+        localStorage.setItem('tuition_v5_data', JSON.stringify(students));
+        localStorage.setItem('tuition_v5_head', JSON.stringify(header));
+    }
 
-        // Admin Functions
-        function updateHeader() {
-            headerInfo.title = document.getElementById('input-title').value;
-            headerInfo.subtitle = document.getElementById('input-subtitle').value;
-            render();
-            alert("Status board updated!");
-        }
+    // --- Core Logic Functions ---
 
-        function addLecture() {
-            students = students.map(s => {
-                const newCount = s.count + 1;
-                return { ...s, count: newCount, isDue: newCount >= 12 ? true : s.isDue };
-            });
-            render();
-        }
-
-        function clearDue(id) {
-            students = students.map(s => s.id === id ? { ...s, isDue: false } : s);
-            render();
-        }
-
-        document.getElementById('admin-open-btn').onclick = () => {
-            if(prompt("Password:") === "945462") {
-                document.getElementById('admin-panel').classList.remove('hidden');
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            }
-        };
-
-        function closeAdmin() { document.getElementById('admin-panel').classList.add('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-
+    function updateHeader() {
+        header.t = document.getElementById('input-title').value;
+        header.s = document.getElementById('input-subtitle').value;
         render();
-    </script>
+        alert("Status Board Updated!");
+    }
+
+    // Global Increment with Auto-Reset Logic (12 -> 1)
+    function addLectureAll() {
+        students = students.map(s => {
+            let nc = s.count + 1;
+            let dueStatus = s.isDue;
+
+            if (nc > 12) {
+                nc = 1; // ১৩ নম্বর ক্লাস হলে সেটি অটো ১ হয়ে যাবে
+                dueStatus = true; // এবং নতুন পেমেন্ট ডিউ দেখাবে
+            } else if (nc === 12) {
+                dueStatus = true; // ১২ নম্বর ক্লাসে ডিউ মার্ক হবে
+            }
+
+            return { ...s, count: nc, isDue: dueStatus };
+        });
+        render();
+    }
+
+    // Individual Manual Update
+    function manualUpdate(id) {
+        const val = parseInt(document.getElementById(`num-${id}`).value);
+        if (isNaN(val)) return;
+        
+        students = students.map(s => {
+            if (s.id === id) {
+                return { ...s, count: val, isDue: val >= 12 };
+            }
+            return s;
+        });
+        render();
+        alert("Updated Successfully!");
+    }
+
+    // Clear Only the 'DUE' Tag
+    function clearDue(id) {
+        students = students.map(s => s.id === id ? { ...s, isDue: false } : s);
+        render();
+    }
+
+    // Admin Auth
+    document.getElementById('admin-open-btn').onclick = () => {
+        const pass = prompt("Enter Administration Password:");
+        if (pass === "945462") {
+            document.getElementById('admin-panel').classList.remove('hidden');
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        } else if (pass !== null) {
+            alert("Wrong Password!");
+        }
+    };
+
+    document.getElementById('close-x').onclick = () => {
+        document.getElementById('admin-panel').classList.add('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    // Initial Load
+    render();
+</script>
 </body>
 </html>
